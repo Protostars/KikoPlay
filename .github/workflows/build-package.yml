@@ -118,24 +118,15 @@ jobs:
           chmod a+x linuxdeployqt.AppImage
         fi
         tree debian/
-        chmod +x debian/usr/bin/KikoPlay
-        file debian/usr/bin/KikoPlay
-        command -v ldd
-        command -v grep
-        command -v desktop-file-validate
-        mv debian/usr/share/applications/io.github.KikoPlayProject.KikoPlay.desktop debian/usr/share/applications/KikoPlay.desktop
-        mv debian/usr/share/icons/hicolor/128x128/apps/io.github.KikoPlayProject.KikoPlay.png debian/usr/share/icons/hicolor/128x128/apps/KikoPlay.png
-        sed -i "s/^Icon=.*/Icon=KikoPlay /" debian/usr/share/applications/KikoPlay.desktop
-        desktop-file-validate debian/usr/share/applications/KikoPlay.desktop
         mkdir -p debian/usr/share/doc/libc6/
         touch debian/usr/share/doc/libc6/copyright
-        tree debian/
-        ./linuxdeployqt.AppImage debian/usr/share/applications/KikoPlay.desktop -appimage -unsupported-allow-new-glibc
+        ./linuxdeployqt.AppImage debian/usr/share/applications/io.github.KikoPlayProject.KikoPlay.desktop -appimage -unsupported-allow-new-glibc -exclude-libs=libqsqlmimer,libmysqlclient,libqsqlmysql,libqsqlpsql,libqsqlodbc,libqtposition_nmea
         if [ "${{ matrix.arch }}" = "amd64" ]; then
           mv KikoPlay-x86_64.AppImage ../../../kikoplay-${{ matrix.arch }}-full.AppImage
         else
           mv KikoPlay-aarch64.AppImage ../../../kikoplay-${{ matrix.arch }}-full.AppImage
         fi
+        tree debian/
         dpkg-deb --build --root-owner-group debian kikoplay-${{ matrix.arch }}-full.deb
 
 
