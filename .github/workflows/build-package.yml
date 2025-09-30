@@ -127,7 +127,7 @@ jobs:
         mv debian/usr/share/icons/hicolor/128x128/apps/io.github.KikoPlayProject.KikoPlay.png debian/usr/share/icons/hicolor/128x128/apps/KikoPlay.png
         sed -i "s/^Icon=.*/Icon=KikoPlay /" debian/usr/share/applications/KikoPlay.desktop
         desktop-file-validate debian/usr/share/applications/KikoPlay.desktop
-        ./linuxdeployqt.AppImage debian/usr/share/applications/KikoPlay.desktop -appimage  -unsupported-bundle-everything -exclude-libs=libqsqlmimer,libmysqlclient,libqsqlmysql,libqsqlpsql,libqsqlodbc,libqtposition_nmea
+        ./linuxdeployqt.AppImage debian/usr/share/applications/KikoPlay.desktop -appimage
         if [ "${{ matrix.arch }}" = "amd64" ]; then
           mv KikoPlay-x86_64.AppImage ../../../kikoplay-${{ matrix.arch }}-full.AppImage
         else
