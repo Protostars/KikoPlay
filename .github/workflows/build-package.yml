@@ -121,13 +121,12 @@ jobs:
         mkdir -p debian/usr/share/doc/libc6/
         touch debian/usr/share/doc/libc6/copyright
         ./linuxdeployqt.AppImage debian/usr/share/applications/io.github.KikoPlayProject.KikoPlay.desktop -appimage -unsupported-allow-new-glibc -exclude-libs=libqsqlmimer,libmysqlclient,libqsqlmysql,libqsqlpsql,libqsqlodbc,libqtposition_nmea
-        tree ./
         if [ "${{ matrix.arch }}" = "amd64" ]; then
-          mv KikoPlay-x86_64.AppImage ../../../kikoplay-${{ matrix.arch }}-full.AppImage
+          mv KikoPlay-*x86_64.AppImage kikoplay-${{ matrix.arch }}-full.AppImage
         else
-          mv KikoPlay-aarch64.AppImage ../../../kikoplay-${{ matrix.arch }}-full.AppImage
+          mv KikoPlay-*aarch64.AppImage kikoplay-${{ matrix.arch }}-full.AppImage
         fi
-        tree debian/
+        ls -lah
         dpkg-deb --build --root-owner-group debian kikoplay-${{ matrix.arch }}-full.deb
 
 
