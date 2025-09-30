@@ -43,7 +43,8 @@ jobs:
           libevent-dev \
           liblua5.3-dev \
           libfuse2 \
-          tree
+          tree \
+          desktop-file-utils
 
     - name: Install ONNX Runtime
       run: |
@@ -117,6 +118,10 @@ jobs:
           chmod a+x linuxdeployqt.AppImage
         fi
         tree debian/
+        chmod +x debian/usr/bin/KikoPlay
+        file debian/usr/bin/KikoPlay
+        ldd debian/usr/bin/KikoPlay | grep "not found"
+        desktop-file-validate debian/usr/share/applications/io.github.KikoPlayProject.KikoPlay.desktop
         ./linuxdeployqt.AppImage debian/usr/share/applications/io.github.KikoPlayProject.KikoPlay.desktop -appimage  -unsupported-bundle-everything -exclude-libs=libqsqlmimer,libmysqlclient,libqsqlmysql,libqsqlpsql,libqsqlodbc,libqtposition_nmea
         if [ "${{ matrix.arch }}" = "amd64" ]; then
           mv KikoPlay-x86_64.AppImage ../../../kikoplay-${{ matrix.arch }}-full.AppImage
