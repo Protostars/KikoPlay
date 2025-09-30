@@ -19,9 +19,9 @@ jobs:
           - artifact_name: kikoplay-amd64
             arch: amd64
             qt_arch: linux_gcc_64
-          - artifact_name: kikoplay-arm64
-            arch: arm64
-            qt_arch: linux_gcc_arm64
+          #- artifact_name: kikoplay-arm64
+          #  arch: arm64
+          #  qt_arch: linux_gcc_arm64
 
     runs-on: ${{ matrix.arch == 'arm64' && 'ubuntu-24.04-arm' || 'ubuntu-24.04' }}
 
