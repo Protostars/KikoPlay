@@ -121,7 +121,8 @@ jobs:
         chmod +x debian/usr/bin/KikoPlay
         file debian/usr/bin/KikoPlay
         command -v ldd
-        ldd debian/usr/bin/KikoPlay | grep "not found"
+        command -v grep
+        ldd debian/usr/bin/KikoPlay
         command -v desktop-file-validate
         desktop-file-validate debian/usr/share/applications/io.github.KikoPlayProject.KikoPlay.desktop
         ./linuxdeployqt.AppImage debian/usr/share/applications/io.github.KikoPlayProject.KikoPlay.desktop -appimage  -unsupported-bundle-everything -exclude-libs=libqsqlmimer,libmysqlclient,libqsqlmysql,libqsqlpsql,libqsqlodbc,libqtposition_nmea
