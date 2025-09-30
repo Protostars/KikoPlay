@@ -42,7 +42,8 @@ jobs:
           libminizip-dev \
           libevent-dev \
           liblua5.3-dev \
-          libfuse2
+          libfuse2 \
+          tree
 
     - name: Install ONNX Runtime
       run: |
@@ -115,6 +116,7 @@ jobs:
           mv linuxdeployqt-continuous-aarch64.AppImage linuxdeployqt.AppImage
           chmod a+x linuxdeployqt.AppImage
         fi
+        tree debian/
         ./linuxdeployqt.AppImage debian/usr/share/applications/io.github.KikoPlayProject.KikoPlay.desktop -appimage  -unsupported-bundle-everything -exclude-libs=libqsqlmimer,libmysqlclient,libqsqlmysql,libqsqlpsql,libqsqlodbc,libqtposition_nmea
         if [ "${{ matrix.arch }}" = "amd64" ]; then
           mv KikoPlay-x86_64.AppImage ../../../kikoplay-${{ matrix.arch }}-full.AppImage
