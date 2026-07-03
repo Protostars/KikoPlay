@@ -435,6 +435,46 @@ void ListWindow::initActions()
         if(restorePlayState)GlobalObjects::mpvplayer->setState(MPVPlayer::Play);
         showMessage(tr("Done adding"), NotifyMessageFlag::NM_HIDE);
     });
+    act_addSubAsDanmuSource=new QAction(tr("Import Subtitle as Danmu Source"),this);
+    QObject::connect(act_addSubAsDanmuSource, &QAction::triggered, this, [this](){
+        QSortFilterProxyModel *model = static_cast<QSortFilterProxyModel *>(playlistView->model());
+        QItemSelection selection = model->mapSelectionToSource(playlistView->selectionModel()->selection());
+        if (selection.size() == 0)return;
+        QModelIndex selIndex(selection.indexes().first());
+        const PlayListItem *item=GlobalObjects::playlist->getItem(selIndex);
+        if(!item->hasPool())
+        {
+            showMessage(tr("No pool associated"), NotifyMessageFlag::NM_HIDE);
+            return;
+        }
+        bool restorePlayState = false;
+        if (GlobalObjects::mpvplayer->needPause())
+        {
+            restorePlayState = true;
+            GlobalObjects::mpvplayer->setState(MPVPlayer::Pause);
+        }
+        const QString dialogPath = item->path.isEmpty() ? "" : QFileInfo(item->path).absolutePath();
+        QStringList files = QFileDialog::getOpenFileNames(this,tr("Select Subtitle File"), dialogPath, "Subtitle File(*.srt *.ass *.ssa) ");
+        if(!files.isEmpty())
+        {
+            for(auto &file: files)
+            {
+                QVector<DanmuComment *> tmplist;
+                LocalProvider::LoadSubFile(file,tmplist);
+                DanmuSource sourceInfo;
+                sourceInfo.scriptData = file;
+                sourceInfo.title=file.mid(file.lastIndexOf('/')+1);
+                sourceInfo.count=tmplist.count();
+                if(GlobalObjects::danmuManager->getPool(item->poolID)->addSource(sourceInfo,tmplist,true)==-1)
+                {
+                    qDeleteAll(tmplist);
+                    showMessage(tr("Add Failed: Pool is busy"), NotifyMessageFlag::NM_HIDE);
+                }
+            }
+        }
+        if(restorePlayState)GlobalObjects::mpvplayer->setState(MPVPlayer::Play);
+        showMessage(tr("Done adding"), NotifyMessageFlag::NM_HIDE);
+    });
     act_updateDanmu=new QAction(tr("Update Danmu"),this);
     QObject::connect(act_updateDanmu, &QAction::triggered, this, [this](){
         QSortFilterProxyModel *model = static_cast<QSortFilterProxyModel *>(playlistView->model());
@@ -802,6 +842,35 @@ void ListWindow::initActions()
             {
                 QVector<DanmuComment *> tmplist;
                 LocalProvider::LoadXmlDanmuFile(file,tmplist);
+                DanmuSource sourceInfo;
+                sourceInfo.scriptData = file;
+                sourceInfo.title=file.mid(file.lastIndexOf('/')+1);
+                sourceInfo.show=true;
+                sourceInfo.count=tmplist.count();
+                if(GlobalObjects::danmuPool->getPool()->addSource(sourceInfo,tmplist,true)==-1)
+                {
+                    qDeleteAll(tmplist);
+                    showMessage(tr("Add Failed: Pool is busy"), NotifyMessageFlag::NM_HIDE);
+                }
+            }
+        }
+        if(restorePlayState)GlobalObjects::mpvplayer->setState(MPVPlayer::Play);
+    });
+    act_addSubAsDanmu=new QAction(tr("Import Subtitle as Danmu"),this);
+    QObject::connect(act_addSubAsDanmu, &QAction::triggered, this, [this](){
+        bool restorePlayState = false;
+        if (GlobalObjects::mpvplayer->needPause())
+        {
+            restorePlayState = true;
+            GlobalObjects::mpvplayer->setState(MPVPlayer::Pause);
+        }
+        QStringList files = QFileDialog::getOpenFileNames(this,tr("Select Subtitle File"),"","Subtitle File(*.srt *.ass *.ssa) ");
+        if(!files.isEmpty())
+        {
+            for(auto &file: files)
+            {
+                QVector<DanmuComment *> tmplist;
+                LocalProvider::LoadSubFile(file,tmplist);
                 DanmuSource sourceInfo;
                 sourceInfo.scriptData = file;
                 sourceInfo.title=file.mid(file.lastIndexOf('/')+1);
@@ -1279,6 +1348,7 @@ void ListWindow::updatePlaylistActions()
     act_updateDanmu->setEnabled(hasPlaylistSelection);
     act_addWebDanmuSource->setEnabled(hasPlaylistSelection);
     act_addLocalDanmuSource->setEnabled(hasPlaylistSelection);
+    act_addSubAsDanmuSource->setEnabled(hasPlaylistSelection);
     act_cut->setEnabled(hasPlaylistSelection);
     act_remove->setEnabled(hasPlaylistSelection);
     act_removeInvalid->setEnabled(hasPlaylistSelection);
@@ -1416,6 +1486,7 @@ QWidget *ListWindow::initPlaylistPage()
     QMenu *danmuSubMenu = new ElaMenu(tr("Danmu"),playlistContextMenu);
     danmuSubMenu->addAction(act_addWebDanmuSource);
     danmuSubMenu->addAction(act_addLocalDanmuSource);
+    danmuSubMenu->addAction(act_addSubAsDanmuSource);
     danmuSubMenu->addAction(act_updateDanmu);
     danmuSubMenu->addAction(act_exportDanmu);
     playlistContextMenu->addMenu(danmuSubMenu);
@@ -1592,7 +1663,7 @@ QWidget *ListWindow::initDanmulistPage()
     };
     QList<QAction *> tbActions[tbBtnCount] = {
         {},
-        {act_addOnlineDanmu, act_addLocalDanmu},
+        {act_addOnlineDanmu, act_addLocalDanmu, act_addSubAsDanmu},
         {act_editBlock},
         {act_editPool},
         {}
@@ -1759,6 +1830,7 @@ int ListWindow::updateCurrentPool()
     act_autoMatch->setEnabled(false);
     act_addOnlineDanmu->setEnabled(false);
     act_addLocalDanmu->setEnabled(false);
+    act_addSubAsDanmu->setEnabled(false);
     const auto &sources = GlobalObjects::danmuPool->getPool()->sources();
     int count = 0;
     for(auto iter=sources.cbegin();iter!=sources.cend();++iter)
@@ -1770,6 +1842,7 @@ int ListWindow::updateCurrentPool()
     act_autoMatch->setEnabled(true);
     act_addOnlineDanmu->setEnabled(true);
     act_addLocalDanmu->setEnabled(true);
+    act_addSubAsDanmu->setEnabled(true);
     return count;
 }
 

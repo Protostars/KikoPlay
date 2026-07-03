@@ -54,7 +54,7 @@ private:
             *act_remove,*act_clear, *act_removeMatch, *act_removeInvalid,
             *act_sortSelectionAscending,*act_sortSelectionDescending,*act_sortAllAscending,*act_sortAllDescending,
             *act_noLoopOne,*act_noLoopAll,*act_loopOne,*act_loopAll,*act_random,
-            *act_browseFile,*act_autoMatch,*act_exportDanmu,*act_addWebDanmuSource, *act_addLocalDanmuSource, *act_updateDanmu,
+            *act_browseFile,*act_autoMatch,*act_exportDanmu,*act_addWebDanmuSource, *act_addLocalDanmuSource, *act_addSubAsDanmuSource, *act_updateDanmu,
             *act_sharePoolCode, *act_shareResourceCode, *act_markBgmCollection, *act_updateFolder, *act_PlayOnOtherDevices;
     QMenu *matchSubMenu, *markSubMenu;
     bool actionDisable;
@@ -64,7 +64,7 @@ private:
 
     QTreeView *danmulistView = nullptr;
     QWidget *initDanmulistPage();
-    QAction *act_addOnlineDanmu,*act_addLocalDanmu,*act_editPool,*act_editBlock,
+    QAction *act_addOnlineDanmu,*act_addLocalDanmu,*act_addSubAsDanmu,*act_editPool,*act_editBlock,
             *act_copyDanmuText,*act_copyDanmuColor,*act_copyDanmuSender,
             *act_blockText,*act_blockColor,*act_blockSender,
             *act_jumpToTime, *act_deleteDanmu;

@@ -23,7 +23,7 @@ void BottomLayout::addDanmu(QSharedPointer<DanmuComment> danmu, DanmuDrawInfo *d
     {
         if(currentY-(*iter)->y-(*iter)->drawInfo->height-margin_y>=dm_height)
         {
-            dmobj->y=currentY;
+            dmobj->y = currentY - dm_height;
             bottomdanmu.insert(iter,dmobj);
             success=true;
             break;
@@ -38,7 +38,7 @@ void BottomLayout::addDanmu(QSharedPointer<DanmuComment> danmu, DanmuDrawInfo *d
         }
         //--------
         cY=(*iter)->y-margin_y;
-        currentY=cY-dm_height;
+        currentY = cY;
         if(currentY<=top)
             break;
     }
@@ -48,7 +48,7 @@ void BottomLayout::addDanmu(QSharedPointer<DanmuComment> danmu, DanmuDrawInfo *d
         {
             if(currentY>top)
             {
-                dmobj->y=currentY-(bottomdanmu.empty()?dm_height:0);
+                dmobj->y = currentY - dm_height;
                 bottomdanmu.push_back(dmobj);
                 break;
             }
