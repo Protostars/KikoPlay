@@ -29,6 +29,7 @@
 #define SERVICE_KEY_ACCESS_TOKEN "Profile/AccessToken"
 #define SERVICE_KEY_REFRESH_TOKEN "Profile/RefreshToken"
 #define SERVICE_KEY_ENABLE_K_MATCH "KService/EnableMatch"
+#define SERVICE_KEY_AUTO_ADD_DM_SRC "KService/EnableAutoAddDMSrc"
 #define SERVICE_KEY_ENABLE_UPDATE_SRC "KService/EnableUpdateSrc"
 #define SERVICE_KEY_LIBRARAY_SOURCE_INDEX "KService/LibrarySourceIndex"
 #define SERVICE_KEY_LIBRARAY_SELECT_SOURCE "KService/LibrarySourceSelected"
@@ -711,6 +712,16 @@ void KService::setEnableKServiceMatch(bool on)
     serviceData->setValue(SERVICE_KEY_ENABLE_K_MATCH, on);
 }
 
+bool KService::enableKServiceAutoAddDanmuSrc() const
+{
+    return serviceData->value(SERVICE_KEY_AUTO_ADD_DM_SRC, true).toBool();
+}
+
+void KService::setEnableKServiceAutoAddDanmuSrc(bool on)
+{
+    serviceData->setValue(SERVICE_KEY_AUTO_ADD_DM_SRC, on);
+}
+
 bool KService::enableKServiceUpdatSrc() const
 {
     return serviceData->value(SERVICE_KEY_ENABLE_UPDATE_SRC, true).toBool();
@@ -1076,16 +1087,20 @@ void KService::handleFileReco(const QString &path, QNetworkReply *reply)
     match.scriptId = QString::fromStdString(selectedInfoSource->scriptid());
     match.scriptData = QString::fromStdString(selectedInfoSource->scriptdata());
     match.infoSrcType = selectedInfoSource->type();
-    for (int i = 0; i < rsp.danmusources_size(); ++i)
+    if (enableKServiceAutoAddDanmuSrc())
     {
-        auto &dm_src = rsp.danmusources(i);
-        MatchDanmuSource src;
-        src.name = QString::fromStdString(dm_src.title());
-        src.type = dm_src.type();
-        src.durationSeconds = dm_src.durationseconds();
-        src.scriptId = QString::fromStdString(dm_src.scriptid());
-        src.scriptData = QString::fromStdString(dm_src.scriptdata());
-        match.danmuSources.append(src);
+        for (int i = 0; i < rsp.danmusources_size(); ++i)
+        {
+            auto& dm_src = rsp.danmusources(i);
+            MatchDanmuSource src;
+            src.name = QString::fromStdString(dm_src.title());
+            src.type = dm_src.type();
+            src.durationSeconds = dm_src.durationseconds();
+            src.srcId = QString::fromStdString(dm_src.srcid());
+            src.scriptId = QString::fromStdString(dm_src.scriptid());
+            src.scriptData = QString::fromStdString(dm_src.scriptdata());
+            match.danmuSources.append(src);
+        }
     }
     match.success = true;
     emit recognized(1, "", path, match);

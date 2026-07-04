@@ -61,6 +61,14 @@ SettingItemArea *PlaylistPage::initEpMatchArea()
         KService::instance()->setEnableKServiceMatch(checked);
     });
 
+    ElaToggleSwitch *kserviceAutoAddSrcSwitch = new ElaToggleSwitch(this);
+    kserviceAutoAddSrcSwitch->setIsToggled(KService::instance()->enableKServiceAutoAddDanmuSrc());
+    epMatchArea->addItem(tr("Recognition succeeded: auto-add danmu source (if any)"), kserviceAutoAddSrcSwitch);
+
+    QObject::connect(kserviceAutoAddSrcSwitch, &ElaToggleSwitch::toggled, this, [=](bool checked){
+        KService::instance()->setEnableKServiceAutoAddDanmuSrc(checked);
+    });
+
     KPushButton *kserviceLibraryOrderBtn = new KPushButton(tr("Edit"), this);
     epMatchArea->addItem(tr("KService Library Download Priority"), kserviceLibraryOrderBtn);
     QObject::connect(kserviceLibraryOrderBtn, &QPushButton::clicked, this, [=](){

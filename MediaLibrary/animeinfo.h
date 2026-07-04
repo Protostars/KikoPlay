@@ -93,6 +93,7 @@ struct MatchDanmuSource
     int type;
     int durationSeconds;
     QString name;
+    QString srcId;
     QString scriptId;
     QString scriptData;
 };

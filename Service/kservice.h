@@ -100,6 +100,8 @@ public:
     QString isValidPassword(const QString &password) const;
     bool enableKServiceMatch() const;
     void setEnableKServiceMatch(bool on);
+    bool enableKServiceAutoAddDanmuSrc() const;
+    void setEnableKServiceAutoAddDanmuSrc(bool on);
     bool enableKServiceUpdatSrc() const;
     void setEnableKServiceUpdateSrc(bool on);
     QList<QPair<QString, QPair<int, bool> > > getLibrarySource() const;

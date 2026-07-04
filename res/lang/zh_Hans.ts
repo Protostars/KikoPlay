@@ -2543,7 +2543,7 @@
         <translation>正在添加：%1-%2</translation>
     </message>
     <message>
-        <location filename="../../Play/Danmu/Manager/danmumanager.cpp" line="715"/>
+        <location filename="../../Play/Danmu/Manager/danmumanager.cpp" line="716"/>
         <source>Set Delay: %1 %2 %3</source>
         <translation>设置延迟：%1 %2 %3</translation>
     </message>
@@ -2552,17 +2552,17 @@
         <translation type="vanished">第%0话 %1</translation>
     </message>
     <message>
-        <location filename="../../Play/Danmu/Manager/danmumanager.cpp" line="571"/>
+        <location filename="../../Play/Danmu/Manager/danmumanager.cpp" line="572"/>
         <source>Deleting: %1 %2</source>
         <translation>正在删除：%1 %2</translation>
     </message>
     <message>
-        <location filename="../../Play/Danmu/Manager/danmumanager.cpp" line="597"/>
+        <location filename="../../Play/Danmu/Manager/danmumanager.cpp" line="598"/>
         <source>Deleting: %1 %2 %3</source>
         <translation>正在删除：%1 %2 %3</translation>
     </message>
     <message>
-        <location filename="../../Play/Danmu/Manager/danmumanager.cpp" line="676"/>
+        <location filename="../../Play/Danmu/Manager/danmumanager.cpp" line="677"/>
         <source>Updating: %1 %2 %3</source>
         <translation>正在更新：%1 %2 %3</translation>
     </message>
@@ -4179,19 +4179,19 @@ Finish Time: ----</source>
 <context>
     <name>KLibraryOrderDialog</name>
     <message>
-        <location filename="../../UI/settings/playlistpage.cpp" line="117"/>
+        <location filename="../../UI/settings/playlistpage.cpp" line="125"/>
         <source>Library Download Priority</source>
         <translation>资料下载优先级</translation>
     </message>
     <message>
-        <location filename="../../UI/settings/playlistpage.cpp" line="119"/>
+        <location filename="../../UI/settings/playlistpage.cpp" line="127"/>
         <source>When multiple data sources are obtained from KService, set the download priority:
 (Drag to change the order)</source>
         <translation>当从KService获取到多个资料源时，设置下载优先级：
 （拖动改变顺序）</translation>
     </message>
     <message>
-        <location filename="../../UI/settings/playlistpage.cpp" line="161"/>
+        <location filename="../../UI/settings/playlistpage.cpp" line="169"/>
         <source>At least one source must be selected</source>
         <translation>至少选择一个来源</translation>
     </message>
@@ -4390,48 +4390,48 @@ Finish Time: ----</source>
         <translation type="vanished">用户名无效：只允许英文字母，数字和下划线</translation>
     </message>
     <message>
-        <location filename="../../Service/kservice.cpp" line="665"/>
+        <location filename="../../Service/kservice.cpp" line="666"/>
         <source>Invalid UserName: Only Chinese characters, English letters, numbers, and underscores are allowed</source>
         <translation>用户名无效：只允许中文字符，英文字母，数字和下划线</translation>
     </message>
     <message>
-        <location filename="../../Service/kservice.cpp" line="670"/>
+        <location filename="../../Service/kservice.cpp" line="671"/>
         <source>Length invalid</source>
         <translation>长度无效</translation>
     </message>
     <message>
-        <location filename="../../Service/kservice.cpp" line="680"/>
-        <location filename="../../Service/kservice.cpp" line="686"/>
+        <location filename="../../Service/kservice.cpp" line="681"/>
+        <location filename="../../Service/kservice.cpp" line="687"/>
         <source>Invalid email format</source>
         <translation>Email格式无效</translation>
     </message>
     <message>
-        <location filename="../../Service/kservice.cpp" line="690"/>
+        <location filename="../../Service/kservice.cpp" line="691"/>
         <source>Email length lnvalid</source>
         <translation>Email长度无效</translation>
     </message>
     <message>
-        <location filename="../../Service/kservice.cpp" line="699"/>
+        <location filename="../../Service/kservice.cpp" line="700"/>
         <source>Password length invalid, must be greater than 6</source>
         <translation>密码无效，长度应大于6</translation>
     </message>
     <message>
-        <location filename="../../Service/kservice.cpp" line="727"/>
+        <location filename="../../Service/kservice.cpp" line="738"/>
         <source>Bangumi</source>
         <translation>Bangumi</translation>
     </message>
     <message>
-        <location filename="../../Service/kservice.cpp" line="728"/>
+        <location filename="../../Service/kservice.cpp" line="739"/>
         <source>Douban</source>
         <translation>豆瓣</translation>
     </message>
     <message>
-        <location filename="../../Service/kservice.cpp" line="1141"/>
+        <location filename="../../Service/kservice.cpp" line="1156"/>
         <source>Login Response Parse Error</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../Service/kservice.cpp" line="1196"/>
+        <location filename="../../Service/kservice.cpp" line="1211"/>
         <source>Register rsp parse error</source>
         <translation></translation>
     </message>
@@ -7456,7 +7456,7 @@ Folder Collection
     </message>
     <message>
         <location filename="../../UI/settings/playlistpage.cpp" line="52"/>
-        <location filename="../../UI/settings/playlistpage.cpp" line="64"/>
+        <location filename="../../UI/settings/playlistpage.cpp" line="72"/>
         <source>Edit</source>
         <translation>编辑</translation>
     </message>
@@ -7471,17 +7471,22 @@ Folder Collection
         <translation>启用KService识别</translation>
     </message>
     <message>
-        <location filename="../../UI/settings/playlistpage.cpp" line="65"/>
+        <location filename="../../UI/settings/playlistpage.cpp" line="66"/>
+        <source>Recognition succeeded: auto-add danmu source (if any)</source>
+        <translation>识别成功：自动添加弹幕源（如果有）</translation>
+    </message>
+    <message>
+        <location filename="../../UI/settings/playlistpage.cpp" line="73"/>
         <source>KService Library Download Priority</source>
         <translation>KService资料源下载优先级</translation>
     </message>
     <message>
-        <location filename="../../UI/settings/playlistpage.cpp" line="86"/>
+        <location filename="../../UI/settings/playlistpage.cpp" line="94"/>
         <source>Macth Filter</source>
         <translation>识别过滤</translation>
     </message>
     <message>
-        <location filename="../../UI/settings/playlistpage.cpp" line="87"/>
+        <location filename="../../UI/settings/playlistpage.cpp" line="95"/>
         <source>Set rules line by line, supporting regular expressions.
 KikoPlay will skip items matched by the rules during the match process.</source>
         <translation>逐行设置规则，支持正则表达式
@@ -7498,12 +7503,12 @@ KikoPlay will skip items matched by the rules during the match process.</source>
 KikoPlay在关联过程中会跳过路径被规则匹配到的条目</translation>
     </message>
     <message>
-        <location filename="../../UI/settings/playlistpage.cpp" line="101"/>
+        <location filename="../../UI/settings/playlistpage.cpp" line="109"/>
         <source>Other</source>
         <translation>其他</translation>
     </message>
     <message>
-        <location filename="../../UI/settings/playlistpage.cpp" line="106"/>
+        <location filename="../../UI/settings/playlistpage.cpp" line="114"/>
         <source>Auto-add when opening external files</source>
         <translation>打开外部文件时自动加入播放列表</translation>
     </message>

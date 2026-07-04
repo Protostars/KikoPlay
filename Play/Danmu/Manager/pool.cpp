@@ -84,19 +84,19 @@ int Pool::update(int sourceId, QVector<QSharedPointer<DanmuComment> > *incList, 
         if (src) nSrcMap[src->id] = src;
     }
     auto checkUpdateSource = [&](DanmuSource &oldSrc) -> bool{
-        if (pid.isEmpty() || !nSrcMap.contains(oldSrc.id)) return false;
+        if (!nSrcMap.contains(oldSrc.id)) return false;
         DanmuSource *nSrc = nSrcMap[oldSrc.id];
         bool changed = false;
         if (oldSrc.sourceValid != nSrc->sourceValid)
         {
             oldSrc.sourceValid = nSrc->sourceValid;
-            GlobalObjects::danmuManager->updateSourceValid(pid, &oldSrc);
+            if (!pid.isEmpty()) GlobalObjects::danmuManager->updateSourceValid(pid, &oldSrc);
             changed = true;
         }
         if (oldSrc.tags != nSrc->tags)
         {
             oldSrc.tags = nSrc->tags;
-            GlobalObjects::danmuManager->updateSourceTags(pid, &oldSrc);
+            if (!pid.isEmpty()) GlobalObjects::danmuManager->updateSourceTags(pid, &oldSrc);
             changed = true;
         }
         if (oldSrc.title != nSrc->title || oldSrc.desc != nSrc->desc || oldSrc.scriptData != nSrc->scriptData || oldSrc.url != nSrc->url || oldSrc.scriptSrcId != nSrc->scriptSrcId) {
@@ -105,7 +105,7 @@ int Pool::update(int sourceId, QVector<QSharedPointer<DanmuComment> > *incList, 
             oldSrc.scriptData = nSrc->scriptData;
             oldSrc.scriptSrcId = nSrc->scriptSrcId;
             oldSrc.url = nSrc->url;
-            GlobalObjects::danmuManager->updateSourceScriptInfo(pid, &oldSrc);
+            if (!pid.isEmpty()) GlobalObjects::danmuManager->updateSourceScriptInfo(pid, &oldSrc);
             changed = true;
         }
         return changed;

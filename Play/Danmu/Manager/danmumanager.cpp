@@ -461,6 +461,7 @@ QString DanmuManager::createPool(const QString &path, const MatchResult &match)
             {
                 DanmuSource src;
                 src.title = mSrc.name;
+                src.scriptSrcId = mSrc.srcId;
                 src.scriptId = mSrc.scriptId;
                 src.scriptData = mSrc.scriptData;
                 src.duration = mSrc.durationSeconds;

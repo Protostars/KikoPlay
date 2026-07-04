@@ -192,7 +192,8 @@ QLayout *LibraryWindow::initLibrarayBtns(QWidget *parent)
     });
     addBtn->setMenu(addSubMenu);
 
-    QMenu *orderSubMenu = new ElaMenu(sortBtn);
+    ElaMenu *orderSubMenu = new ElaMenu(sortBtn);
+    orderSubMenu->setMinimumWidth(160);
 
     QActionGroup *ascDesc = new QActionGroup(orderSubMenu);
     QAction *actAsc = ascDesc->addAction(tr("Ascending"));
