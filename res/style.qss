@@ -295,11 +295,15 @@ QLabel#AliasItem {
     border:1px solid #797979;
     background:transparent;
     color:rgb(220,220,220);
-    border-radius: 2px;
-    padding: 2px;
+    border-radius: 4px;
+    padding: 4px;
 }
 QLabel#AliasItem:hover{
-    background-color:rgb(37, 83, 128);
+    @if{useThemeColor}
+        background-color: rgb(@ThemeColorD1);
+    @else
+        background-color:rgb(37, 83, 128);
+    @endif
 }
 QLabel#SettingDescLabel {
     color: rgb(180, 180, 180);

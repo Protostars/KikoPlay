@@ -537,6 +537,7 @@ QString Pool::getPoolCode(const QStringList &addition) const
         srcObj["i"] = src.scriptId;
         srcObj["d"] = src.scriptData;
 
+        if (src.duration > 0) srcObj["r"] = src.duration;
         if (!src.scriptSrcId.isEmpty()) srcObj["si"] = src.scriptSrcId;
         if (src.delay != 0) srcObj["de"] = src.delay;
         if (src.hasClip()) srcObj["cl"] = src.clipStr();
@@ -628,6 +629,7 @@ bool Pool::addPoolCodeObject(const QJsonObject &infoObj)
         newSrc.scriptId = srcObj.value("i").toString();
         newSrc.scriptData = srcObj.value("d").toString();
 
+        if (srcObj.contains("r")) newSrc.duration = srcObj["r"].toInt();
         if (srcObj.contains("si")) newSrc.scriptSrcId = srcObj["si"].toString();
         if (srcObj.contains("de")) newSrc.delay = srcObj["de"].toInt();
         if (srcObj.contains("cl")) newSrc.setClip(srcObj["cl"].toString());

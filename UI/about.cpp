@@ -14,8 +14,8 @@ About::About(QWidget *parent) : CFramelessDialog("",parent)
     logo->setText(QChar(0xe654));
     logo->setAlignment(Qt::AlignCenter);
     QLabel *info = new QLabel(tr("KikoPlay - NOT ONLY A Full-Featured Danmu Player<br/>"
-                               "%1 (C) 2025 Kikyou <a style='color: rgb(96, 208, 252);' href=\"https://kikoplayproject.github.io/\">homepage</a> <a style='color: rgb(96, 208, 252);' href=\"https://github.com/KikoPlayProject/KikoPlay\">github</a><br/>"
-                                 "Exchange & BUG Report: 874761809(QQ Group)").arg(GlobalObjects::kikoVersion + QString("(beta)")),this);
+                               "%1 (C) 2026 Kikyou <a style='color: rgb(96, 208, 252);' href=\"https://kikoplayproject.github.io/\">homepage</a> <a style='color: rgb(96, 208, 252);' href=\"https://github.com/KikoPlayProject/KikoPlay\">github</a><br/>"
+                                 "Exchange & BUG Report: 874761809(QQ Group)").arg(GlobalObjects::kikoVersion), this);
     info->setOpenExternalLinks(true);
     info->setTextInteractionFlags(Qt::LinksAccessibleByMouse | Qt::TextSelectableByMouse);
     info->setAlignment(Qt::AlignCenter);

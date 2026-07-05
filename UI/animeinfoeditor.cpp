@@ -363,13 +363,14 @@ AliasPanel::AliasPanel(const QString &animeName, QWidget *parent) : QWidget(pare
 
 void AliasPanel::addAlias(const QString &alias)
 {
-    const int curIndex = aliasList.size();
     aliasList.append(alias);
     QLabel *aliasItem = new QLabel(alias, this);
     aliasItem->setObjectName(QStringLiteral("AliasItem"));
     this->layout()->addWidget(aliasItem);
     setVisible(true);
     aliasItem->setContextMenuPolicy(Qt::CustomContextMenu);
+    aliasItem->setFont(QFont(GlobalObjects::normalFont, 12));
+    aliasItem->setMinimumHeight(32);
 
     ElaMenu *actionMenu = new ElaMenu(aliasItem);
     QObject::connect(aliasItem, &QLabel::customContextMenuRequested, this, [=](){
@@ -380,7 +381,7 @@ void AliasPanel::addAlias(const QString &alias)
     QObject::connect(actRemoveAlias, &QAction::triggered, this, [=](){
         AnimeWorker::instance()->removeAlias(anime, alias, true);
         aliasItem->deleteLater();
-        aliasList.removeAt(curIndex);
+        aliasList.removeAll(alias);
         if (aliasList.isEmpty()) setVisible(false);
     });
 }
