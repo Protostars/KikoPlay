@@ -749,7 +749,7 @@ macx {
 
     OBJECTIVE_SOURCES += UI/macwindowhelper.mm
     HEADERS += UI/macwindowhelper.h
-    LIBS += -framework AppKit -framework Cocoa
+    LIBS += -framework AppKit -framework Cocoa -framework QuartzCore
 
     # Homebrew (Apple Silicon default prefix)
     LIBS += -L/usr/lib -L/usr/local/lib -L/opt/local/lib -L/opt/homebrew/lib -L$$PWD/lib/mac
