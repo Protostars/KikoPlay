@@ -43,6 +43,9 @@
 #include "appbar.h"
 #include "ela/ElaToolButton.h"
 #include "ela/ElaMenu.h"
+#ifdef Q_OS_MAC
+#include "macwindowhelper.h"
+#endif
 
 #ifdef KSERVICE
 #include "Service/klogin.h"
@@ -66,6 +69,14 @@ MainWindow::MainWindow(QWidget *parent)
     initTray();
     initSignals();
     restoreSize();
+
+#ifdef Q_OS_MAC
+    // ElaAppBar 使用无边框窗口，macOS 不会再自动裁切圆角，
+    // 通过原生 NSWindow 手动应用圆角与阴影。延后到窗口实现后执行。
+    QTimer::singleShot(0, this, [this](){
+        MacWindowHelper::applyRoundedCorners(this);
+    });
+#endif
 
     if (GlobalObjects::appSetting->value("MainWindow/ShowTip",true).toBool())
     {
