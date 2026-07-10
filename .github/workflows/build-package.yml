@@ -226,6 +226,15 @@ jobs:
         # Ship aria2c so the download feature works out of the box
         cp "$(brew --prefix aria2)/bin/aria2c" "$APP/Contents/MacOS/aria2c"
 
+        # macdeployqt rewrites library paths with install_name_tool, which
+        # invalidates the existing code signatures. On Apple Silicon an
+        # invalid signature makes the kernel SIGKILL the process
+        # (CODESIGNING, Code 2 Invalid Page). Re-sign the whole bundle with an
+        # ad-hoc signature after all modifications are done.
+        codesign --force --deep --sign - --timestamp=none "$APP/Contents/MacOS/aria2c"
+        codesign --force --deep --sign - --timestamp=none "$APP"
+        codesign --verify --deep --verbose=2 "$APP"
+
     - name: Create DMG
       run: |
         # Get version from git tag or use default
