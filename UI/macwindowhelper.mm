@@ -4,6 +4,7 @@
 #include <QWindow>
 
 #import <AppKit/AppKit.h>
+#import <QuartzCore/QuartzCore.h>
 
 namespace MacWindowHelper
 {
