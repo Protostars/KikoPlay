@@ -74,7 +74,12 @@ void GlobalObjects::init(QElapsedTimer *elapsedTimer)
     }
 #endif
 
+#ifdef Q_OS_MAC
+    // macOS 无微软雅黑，使用系统内置的苹方（PingFang SC，10.11+ 内置）作为中文 UI 默认字体。
+    normalFont = appSetting->value("UI/Font", "PingFang SC").toString();
+#else
     normalFont = appSetting->value("UI/Font", "Microsoft YaHei UI").toString();
+#endif
 
     QThread::currentThread()->setObjectName(QStringLiteral("mainThread"));
     workThread = new QThread();
