@@ -1,5 +1,6 @@
 #include "UI/mainwindow.h"
 #include <QApplication>
+#include <QStyleFactory>
 #include <QMessageBox>
 #include <QLocalSocket>
 #include <QLocalServer>
@@ -110,9 +111,18 @@ int main(int argc, char *argv[])
 #endif
     QElapsedTimer timer;
     timer.start();
+#ifdef Q_OS_MAC // macOS 逻辑字体 DPI 默认为 72，而 Windows 为 96，导致同样点值(pt)的字体在 mac 上偏小约 25%。 
+    // 将字体 DPI 对齐到 96，使所有点值字体统一放大到与 Windows 一致（须在 QApplication 构造前设置）。 
+    if (!qEnvironmentVariableIsSet("QT_FONT_DPI")) qputenv("QT_FONT_DPI", "96"); 
+#endif
     QApplication a(argc, argv);
     a.setApplicationName("KikoPlay");
     a.setWindowIcon(QIcon(":/res/images/app.png"));
+#ifdef Q_OS_MAC
+    // macOS 默认使用原生 QMacStyle，会忽略 QSS 的 border-radius 等盒模型属性，
+    // 导致按钮/输入框显示为直角。改用 Fusion 样式以完整支持 QSS 圆角，与其它平台一致。
+    a.setStyle(QStyleFactory::create("Fusion"));
+#endif
 #ifdef Q_OS_WIN
     SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER)AppCrashHandler);
 #endif
