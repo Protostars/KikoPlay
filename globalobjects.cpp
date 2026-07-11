@@ -28,6 +28,7 @@
 #include <QSqlError>
 #include <QFileInfo> 
 #include <QElapsedTimer>
+#include <QSurfaceFormat>
 
 MPVPlayer *GlobalObjects::mpvplayer=nullptr;
 DanmuPool *GlobalObjects::danmuPool=nullptr;
@@ -58,6 +59,20 @@ void GlobalObjects::init(QElapsedTimer *elapsedTimer)
     appSetting = new QSettings(context()->dataPath + "settings.ini", QSettings::IniFormat);
     Network::applyProxySetting();
     Logger::logger();
+
+#ifdef Q_OS_MAC
+    // macOS 兼容 profile 上限仅 OpenGL 2.1，无法使用 sampler2D 数组做弹幕批量渲染。
+    // 开启该选项后请求 4.1 Core Profile 以启用高效弹幕渲染路径（需重启生效）。
+    // 必须在创建 MPVPlayer（QOpenGLWidget）之前设置默认 QSurfaceFormat，否则不生效。
+    if (appSetting->value("Play/MacCoreProfile", false).toBool())
+    {
+        QSurfaceFormat fmt = QSurfaceFormat::defaultFormat();
+        fmt.setRenderableType(QSurfaceFormat::OpenGL);
+        fmt.setProfile(QSurfaceFormat::CoreProfile);
+        fmt.setVersion(4, 1);
+        QSurfaceFormat::setDefaultFormat(fmt);
+    }
+#endif
 
     normalFont = appSetting->value("UI/Font", "Microsoft YaHei UI").toString();
 
