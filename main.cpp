@@ -4,7 +4,6 @@
 #include <QLocalSocket>
 #include <QLocalServer>
 #include <QElapsedTimer>
-#include <QSurfaceFormat>
 #include "globalobjects.h"
 #include "Play/Playlist/playlist.h"
 #include "Play/playcontext.h"
@@ -120,20 +119,6 @@ int main(int argc, char *argv[])
     if(isRunning()) return 0;
     GlobalObjects::context()->tick(&timer, "app");
     GlobalObjects::init(&timer);
-
-#ifdef Q_OS_MAC
-    // macOS 的兼容 profile 上限只有 OpenGL 2.1，无法使用 sampler2D 数组做弹幕批量渲染。
-    // 开启该选项后请求 4.1 Core Profile，从而启用高效弹幕渲染路径（需重启生效）。
-    // 必须在创建任何 GL 上下文（MainWindow）之前设置默认 QSurfaceFormat。
-    if (GlobalObjects::appSetting->value("Play/MacCoreProfile", false).toBool())
-    {
-        QSurfaceFormat fmt = QSurfaceFormat::defaultFormat();
-        fmt.setRenderableType(QSurfaceFormat::OpenGL);
-        fmt.setProfile(QSurfaceFormat::CoreProfile);
-        fmt.setVersion(4, 1);
-        QSurfaceFormat::setDefaultFormat(fmt);
-    }
-#endif
 
     MainWindow w;
     GlobalObjects::mainWindow = &w;
