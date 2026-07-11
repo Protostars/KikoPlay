@@ -40,14 +40,13 @@ private:
     QString sizeSettingKey;
     QVector<std::function<void()>> onCloseCallback;
 
+private:
+    bool roundedCornersApplied = false;
     // QWidget interface
 protected:
     void keyPressEvent(QKeyEvent *event) override;
     virtual void resizeEvent(QResizeEvent *event) override;
     virtual void showEvent(QShowEvent *event) override;
-
-private:
-    bool roundedCornersApplied = false;
 
     void showBusyState(bool busy);
     void setTitle(const QString &text);
