@@ -661,9 +661,11 @@ QWidget *MainWindow::setupPlayPage()
     QObject::connect(playerWindow, &PlayerWindow::miniMode, this, [this, playVerticalLayout](bool on){
         static bool isMax, isShowPlaylist;
         static QRect geo;
+        static Qt::WindowFlags savedFlags;
         if(on)
         {
 #ifndef Q_OS_WIN
+            savedFlags = windowFlags();
             setWindowFlags(Qt::CustomizeWindowHint);
             setAttribute(Qt::WA_Hover);
             setMouseTracking(true);
@@ -683,7 +685,7 @@ QWidget *MainWindow::setupPlayPage()
         else
         {
 #ifndef Q_OS_WIN
-            setWindowFlags (windowFlags() & ~Qt::CustomizeWindowHint);
+            setWindowFlags(savedFlags);
             show();
 #endif
 			isMini = false;
