@@ -3132,10 +3132,41 @@ void unsetAwakeRequired()
     sendInhabitMessage(false);
 }
 
+#elif defined(Q_OS_MAC)
+
+// macOS：使用 IOKit 的电源管理断言阻止显示器休眠与系统睡眠
+
+#include <IOKit/pwr_mgt/IOPMLib.h>
+
+namespace
+{
+IOPMAssertionID assertionID = 0;
+}
+
+void setAwakeRequired()
+{
+    if (assertionID != 0)
+    {
+        return;
+    }
+    CFStringRef reason = CFSTR("KikoPlay is playing video");
+    IOPMAssertionCreateWithName(kIOPMAssertionTypeNoDisplaySleep,
+                                kIOPMAssertionLevelOn, reason, &assertionID);
+}
+
+void unsetAwakeRequired()
+{
+    if (assertionID == 0)
+    {
+        return;
+    }
+    IOPMAssertionRelease(assertionID);
+    assertionID = 0;
+}
+
 #else
 
 // Empty stub function for unknown OS
-// TODO: implement for Mac
 
 void setAwakeRequired() {}
 void unsetAwakeRequired() {}
