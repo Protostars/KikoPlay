@@ -262,6 +262,21 @@ SettingItemArea *DanmuPage::initOtherArea()
     descLabel->setObjectName(QStringLiteral("SettingDescLabel"));
     otherArea->addItem(descLabel, Qt::AlignLeft);
 
+#ifdef Q_OS_MAC
+    // macOS 兼容 profile 上限仅 OpenGL 2.1，弹幕只能逐条绘制。开启后请求 4.1 Core Profile，
+    // 启用 sampler2D 数组批量渲染，弹幕密集时可显著减少 draw call（需重启生效）。
+    ElaToggleSwitch *macCoreProfileSwitch = new ElaToggleSwitch(this);
+    macCoreProfileSwitch->setIsToggled(GlobalObjects::appSetting->value("Play/MacCoreProfile", false).toBool());
+    otherArea->addItem(tr("High Performance Danmu Rendering (Core Profile, Restart required)"), macCoreProfileSwitch);
+    QLabel *macCoreDescLabel = new QLabel(tr("Use OpenGL 4.1 Core Profile for faster danmu rendering when danmu is dense"), otherArea);
+    macCoreDescLabel->setObjectName(QStringLiteral("SettingDescLabel"));
+    otherArea->addItem(macCoreDescLabel, Qt::AlignLeft);
+
+    QObject::connect(macCoreProfileSwitch, &ElaToggleSwitch::toggled, this, [=](bool checked){
+        GlobalObjects::appSetting->setValue("Play/MacCoreProfile", checked);
+    });
+#endif
+
     KPushButton *blockEditBtn = new KPushButton(tr("Edit"), this);
     otherArea->addItem(tr("Block Rules"), blockEditBtn);
 
