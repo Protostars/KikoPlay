@@ -154,6 +154,9 @@ void GlobalObjects::init(QElapsedTimer *elapsedTimer)
 
     QFont font = qApp->font();
     font.setPixelSize(13);
+#ifdef Q_OS_MAC
+    font.setPixelSize(16);
+#endif
     font.setFamily(normalFont);
     font.setHintingPreference(QFont::PreferNoHinting);
     qApp->setFont(font);
