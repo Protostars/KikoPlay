@@ -244,7 +244,7 @@ QLayout *LibraryWindow::initLibrarayBtns(QWidget *parent)
 
     AnimeFilterBox *filterBox = new AnimeFilterBox(parent);
     filterBox->setFixedWidth(130);
-    filterBox->setFixedHeight(filterBtn->sizeHint().height());
+    filterBox->setMinimumHeight(30);
     QObject::connect(filterBox, &AnimeFilterBox::filterChanged, this, [=](int type, const QString &str){
         proxyModel->setFilter(type, str);
     });
