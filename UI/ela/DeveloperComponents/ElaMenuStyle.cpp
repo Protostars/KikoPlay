@@ -216,13 +216,21 @@ QSize ElaMenuStyle::sizeFromContents(ContentsType type, const QStyleOption* opti
             {
                 _isAnyoneItemHasIcon = true;
             }
+            int menuItemWidth = menuItemSize.width();
+            // 有图标或可勾选项时，drawControl 会把文字整体右移
+            // contentPadding + textLeftSpacing + _iconWidth，这里需要把该偏移量
+            // 补进总宽度，否则文字空间被压缩，菜单显得过窄（macOS 尤其明显）。
+            if (_isAnyoneItemHasIcon)
+            {
+                menuItemWidth += menuItemWidth * 0.055 + menuItemWidth * 0.082 + _iconWidth;
+            }
             if (menu->isHasChildMenu())
             {
-                return QSize(menuItemSize.width() + 20, _pMenuItemHeight);
+                return QSize(menuItemWidth + 20, _pMenuItemHeight);
             }
             else
             {
-                return QSize(menuItemSize.width(), _pMenuItemHeight);
+                return QSize(menuItemWidth, _pMenuItemHeight);
             }
         }
     }
