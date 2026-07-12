@@ -136,7 +136,7 @@ void ElaMenuStyle::drawControl(ControlElement element, const QStyleOption* optio
                 if (!mopt->text.isEmpty())
                 {
                     QStringList textList = mopt->text.split("\t");
-                    painter->setFont(qApp->font());
+                    painter->setFont(widget ? widget->font() : qApp->font());
                     painter->setPen(!mopt->state.testFlag(QStyle::State_Enabled) ? Qt::gray : _themeMode == ElaThemeType::Light ? Qt::black
                                                                                                                                 : Qt::white);
 
@@ -216,14 +216,28 @@ QSize ElaMenuStyle::sizeFromContents(ContentsType type, const QStyleOption* opti
             {
                 _isAnyoneItemHasIcon = true;
             }
-            int menuItemWidth = menuItemSize.width();
-            // 有图标或可勾选项时，drawControl 会把文字整体右移
-            // contentPadding + textLeftSpacing + _iconWidth，这里需要把该偏移量
-            // 补进总宽度，否则文字空间被压缩，菜单显得过窄（macOS 尤其明显）。
+            // 绘制时文字用的是 widget 的字体（mac 下为 15px），而基类测量用的是
+            // option 携带的字体，两者可能不一致导致文字被截断。这里用同一字体的
+            // QFontMetrics 实测文字宽度，保证测量与绘制一致。
+            QFont textFont = widget ? widget->font() : qApp->font();
+            QFontMetrics fm(textFont);
+            QStringList textList = mopt->text.split("\t");
+            int textWidth = fm.horizontalAdvance(textList.value(0));
+            qreal contentPadding = menuItemSize.width() * 0.055;
+            qreal textLeftSpacing = menuItemSize.width() * 0.082;
+            // 文字左偏移（图标列） + 文字宽度 + 右侧留白
+            int menuItemWidth = _iconWidth + textWidth + contentPadding * 2;
             if (_isAnyoneItemHasIcon)
             {
-                menuItemWidth += menuItemWidth * 0.055 + menuItemWidth * 0.082 + _iconWidth;
+                menuItemWidth += contentPadding + textLeftSpacing;
             }
+            // 有快捷键时补上快捷键宽度与间距
+            if (textList.count() > 1)
+            {
+                menuItemWidth += fm.horizontalAdvance(textList.value(1)) + textLeftSpacing;
+            }
+            // 不小于基类测量值，避免特殊场景下过窄
+            menuItemWidth = qMax(menuItemWidth, menuItemSize.width());
             if (menu->isHasChildMenu())
             {
                 return QSize(menuItemWidth + 20, _pMenuItemHeight);
