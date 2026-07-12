@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
     timer.start();
 #ifdef Q_OS_MAC // macOS 逻辑字体 DPI 默认为 72，而 Windows 为 96，导致同样点值(pt)的字体在 mac 上偏小约 25%。 
     // 将字体 DPI 对齐到 96，使所有点值字体统一放大到与 Windows 一致（须在 QApplication 构造前设置）。 
-    if (!qEnvironmentVariableIsSet("QT_FONT_DPI")) qputenv("QT_FONT_DPI", "96"); 
+    //if (!qEnvironmentVariableIsSet("QT_FONT_DPI")) qputenv("QT_FONT_DPI", "96"); 
 #endif
     QApplication a(argc, argv);
     a.setApplicationName("KikoPlay");
