@@ -24,8 +24,14 @@ DEFINES += QT_MESSAGELOGCONTEXT
 DEFINES += QT_DEPRECATED_WARNINGS
 DEFINES += ZLIB_WINAPI
 DEFINES += KSERVICE
-# KService relies on protobuf which is not linked on macOS; disable it there.
-macx: DEFINES -= KSERVICE
+# KService relies on protobuf. On macOS protobuf is not linked by default, so
+# KService is only enabled when a protobuf 3.21.x install prefix is provided
+# through the KIKO_PROTOBUF_PREFIX environment variable (see the CI workflow).
+# Local macOS builds without that variable keep KService disabled.
+macx {
+    KIKO_PROTOBUF_PREFIX = $$(KIKO_PROTOBUF_PREFIX)
+    isEmpty(KIKO_PROTOBUF_PREFIX): DEFINES -= KSERVICE
+}
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
@@ -756,6 +762,15 @@ macx {
     # Built-in Lua static library (see Extension/Lua)
     LIBS += -LExtension/Lua -llua53
     LIBS += -lonnxruntime
+
+    # Link protobuf-lite (3.21.x) for KService. The prefix is provided through
+    # the KIKO_PROTOBUF_PREFIX environment variable; a static libprotobuf-lite.a
+    # is preferred so the .app bundle needs no extra dylib.
+    contains(DEFINES, KSERVICE) {
+        KIKO_PROTOBUF_PREFIX = $$(KIKO_PROTOBUF_PREFIX)
+        INCLUDEPATH += $$KIKO_PROTOBUF_PREFIX/include
+        LIBS += -L$$KIKO_PROTOBUF_PREFIX/lib -lprotobuf-lite
+    }
 
     ICON = kikoplay.icns
     QMAKE_INFO_PLIST = Info.plist
