@@ -175,6 +175,23 @@ jobs:
         brew update
         brew install mpv lua onnxruntime aria2 create-dmg
 
+    - name: Build protobuf 3.21.8 (static lite) for KService
+      run: |
+        # The pre-generated Service/pb/service.pb.{cc,h} are produced by
+        # protoc 3.21.8 and require a matching libprotobuf. Homebrew ships a
+        # much newer, incompatible protobuf, so build 3.21.8 from source and
+        # install it into a local prefix. A static libprotobuf-lite.a is used
+        # so the resulting .app needs no extra dylib.
+        PB_PREFIX="$HOME/protobuf-3.21.8"
+        curl -L -o protobuf-cpp-3.21.8.tar.gz \
+          https://github.com/protocolbuffers/protobuf/releases/download/v21.8/protobuf-cpp-3.21.8.tar.gz
+        tar -xzf protobuf-cpp-3.21.8.tar.gz
+        cd protobuf-3.21.8
+        ./configure --prefix="$PB_PREFIX" --disable-shared --enable-static
+        make -j$(sysctl -n hw.ncpu)
+        make install
+        echo "KIKO_PROTOBUF_PREFIX=$PB_PREFIX" >> "$GITHUB_ENV"
+
     - name: Setup Qt
       uses: jurplel/install-qt-action@v4
       with:
