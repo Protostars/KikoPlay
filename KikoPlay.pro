@@ -763,13 +763,15 @@ macx {
     LIBS += -LExtension/Lua -llua53
     LIBS += -lonnxruntime
 
-    # Link protobuf-lite (3.21.x) for KService. The prefix is provided through
-    # the KIKO_PROTOBUF_PREFIX environment variable; a static libprotobuf-lite.a
-    # is preferred so the .app bundle needs no extra dylib.
+    # Link protobuf (3.21.x) for KService. The prefix is provided through the
+    # KIKO_PROTOBUF_PREFIX environment variable. We link the full static
+    # libprotobuf.a (self-contained, no abseil in 3.21.x) rather than the lite
+    # variant: the vanilla autotools libprotobuf-lite.a on macOS omits the
+    # stubs (LogMessage/StringPiece/...) that the generated service.pb.cc needs.
     contains(DEFINES, KSERVICE) {
         KIKO_PROTOBUF_PREFIX = $$(KIKO_PROTOBUF_PREFIX)
         INCLUDEPATH += $$KIKO_PROTOBUF_PREFIX/include
-        LIBS += -L$$KIKO_PROTOBUF_PREFIX/lib -lprotobuf-lite
+        LIBS += -L$$KIKO_PROTOBUF_PREFIX/lib -lprotobuf
     }
 
     ICON = kikoplay.icns
